@@ -240,6 +240,8 @@ class _MainScreenState extends State<MainScreen> {
                     useHybridComposition: true,
                     javaScriptCanOpenWindowsAutomatically: true,
                     supportMultipleWindows: true,
+                    userAgent:
+                        'Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.196 Mobile Safari/537.36',
                   ),
                   pullToRefreshController: pullToRefreshController,
                   onWebViewCreated: (controller) {
@@ -468,24 +470,31 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
             ListTile(
+              dense: true,
+              visualDensity: VisualDensity.compact,
               leading: const FaIcon(
                 FontAwesomeIcons.house,
                 color: Colors.white70,
               ),
-              title: const Text('Home', style: TextStyle(color: Colors.white)),
+              title: const Text(
+                'Home',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
               onTap: () {
                 Navigator.pop(context);
                 _controller.onBottomNavIndexChanged(0);
               },
             ),
             ListTile(
+              dense: true,
+              visualDensity: VisualDensity.compact,
               leading: const FaIcon(
                 FontAwesomeIcons.music,
                 color: Colors.white70,
               ),
               title: const Text(
                 'Playlist',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white, fontSize: 16),
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -493,13 +502,15 @@ class _MainScreenState extends State<MainScreen> {
               },
             ),
             ListTile(
+              dense: true,
+              visualDensity: VisualDensity.compact,
               leading: const FaIcon(
                 FontAwesomeIcons.radio,
                 color: Colors.white70,
               ),
               title: const Text(
                 'LIVE RADIO',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white, fontSize: 16),
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -507,13 +518,15 @@ class _MainScreenState extends State<MainScreen> {
               },
             ),
             ListTile(
+              dense: true,
+              visualDensity: VisualDensity.compact,
               leading: const FaIcon(
                 FontAwesomeIcons.youtube,
                 color: Colors.white70,
               ),
               title: const Text(
                 'Youtube',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white, fontSize: 16),
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -521,19 +534,22 @@ class _MainScreenState extends State<MainScreen> {
               },
             ),
             ListTile(
+              dense: true,
+              visualDensity: VisualDensity.compact,
               leading: const FaIcon(
                 FontAwesomeIcons.bullhorn,
                 color: Colors.white70,
               ),
               title: const Text(
                 'Packages',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white, fontSize: 16),
               ),
               onTap: () {
                 Navigator.pop(context);
                 _controller.onBottomNavIndexChanged(4);
               },
             ),
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: const Divider(color: Colors.white54),
@@ -552,13 +568,15 @@ class _MainScreenState extends State<MainScreen> {
             ),
 
             ListTile(
+              dense: true,
+              visualDensity: VisualDensity.compact,
               leading: const FaIcon(
                 FontAwesomeIcons.spotify,
                 color: Colors.white70,
               ),
               title: const Text(
                 'Spotify',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white, fontSize: 16),
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -568,13 +586,15 @@ class _MainScreenState extends State<MainScreen> {
               },
             ),
             ListTile(
+              dense: true,
+              visualDensity: VisualDensity.compact,
               leading: const FaIcon(
                 FontAwesomeIcons.apple,
                 color: Colors.white70,
               ),
               title: const Text(
                 'Apple Music',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white, fontSize: 16),
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -602,34 +622,67 @@ class _MainScreenState extends State<MainScreen> {
                 );
               },
             ),
-            ListTile(
-              leading: const FaIcon(
-                FontAwesomeIcons.instagram,
-                color: Colors.white70,
-              ),
-              title: const Text(
-                'Instagram',
-                style: TextStyle(color: Colors.white),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                _controller.loadUrl('https://www.instagram.com'); // Placeholder
-              },
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: const Divider(color: Colors.white54),
             ),
+
+            const Padding(
+              padding: EdgeInsets.fromLTRB(16, 10, 16, 5),
+              child: Text(
+                'Social Media',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+
             ListTile(
+              dense: true,
+              visualDensity: VisualDensity.compact,
               leading: const FaIcon(
                 FontAwesomeIcons.facebook,
                 color: Colors.white70,
               ),
               title: const Text(
                 'Facebook',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white, fontSize: 16),
               ),
               onTap: () {
                 Navigator.pop(context);
-                _controller.loadUrl('https://www.facebook.com'); // Placeholder
+                // setState(() {
+                //   _selectedPlatform = SocialPlatform.facebook;
+                // });
+                _controller.loadUrl(_controller.facebookUrl);
               },
             ),
+            ListTile(
+              dense: true,
+              visualDensity: VisualDensity.compact,
+              leading: const FaIcon(
+                FontAwesomeIcons.instagram,
+                color: Colors.white70,
+              ),
+              title: const Text(
+                'Instagram',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                // setState(() {
+                //   _selectedPlatform = SocialPlatform.instagram;
+                // });
+                _controller.loadUrl(_controller.instagramUrl);
+              },
+            ),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: const Divider(color: Colors.white54),
+            ),
+
             ListTile(
               leading: const FaIcon(
                 FontAwesomeIcons.envelope,

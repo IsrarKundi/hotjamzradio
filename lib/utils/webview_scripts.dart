@@ -2,6 +2,7 @@ class WebViewScripts {
   static const String hideHeaderScript = """
     (function() {
       if (window.location.href.includes('music.apple.com')) return;
+      if (window.location.href.includes('instagram.com')) return;
       var style = document.createElement('style');
       style.innerHTML = `
         header, 
