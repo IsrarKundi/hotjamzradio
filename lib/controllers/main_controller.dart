@@ -20,6 +20,9 @@ class MainController extends ChangeNotifier {
       "https://das-edge15-live365-dal02.cdnstream.com/a37600";
   final String youtubeUrl = "https://www.youtube.com";
   final String facebookUrl = "https://www.facebook.com/hotjamzradiostation";
+  final String spotifyUrl =
+      "https://open.spotify.com/user/31363rqfdrwtthetk2bq5eafmtda";
+  final String appleMusicUrl = "https://music.apple.com";
 
   MainController() {
     _initConnectivity();
@@ -86,10 +89,10 @@ class MainController extends ChangeNotifier {
         loadUrl(youtubeUrl);
         break;
       case 3:
-        loadUrl(instagramUrl);
+        loadUrl(spotifyUrl);
         break;
       case 4:
-        loadUrl(facebookUrl);
+        loadUrl(appleMusicUrl);
         break;
     }
   }

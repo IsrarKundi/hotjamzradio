@@ -18,10 +18,13 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
+enum SocialPlatform { facebook, instagram }
+
 class _MainScreenState extends State<MainScreen> {
   final MainController _controller = MainController();
   DateTime? _lastPressedAt;
   PullToRefreshController? pullToRefreshController;
+  SocialPlatform _selectedPlatform = SocialPlatform.facebook;
 
   @override
   void initState() {
@@ -85,22 +88,92 @@ class _MainScreenState extends State<MainScreen> {
               backgroundColor: const Color(0xFF95062D),
               foregroundColor: Colors.white,
               actions: [
-                GestureDetector(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                    child: const FaIcon(FontAwesomeIcons.spotify, size: 24),
+                // Sliding Segmented Toggle
+                Container(
+                  height: 40,
+                  width: 100,
+                  margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                  decoration: BoxDecoration(
+                    color: Colors.black12,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.white24, width: 1),
                   ),
-                  onTap: () => _controller.loadUrl(
-                    'https://open.spotify.com/user/31363rqfdrwtthetk2bq5eafmtda',
+                  child: Stack(
+                    children: [
+                      // Sliding Indicator
+                      AnimatedAlign(
+                        duration: const Duration(milliseconds: 250),
+                        curve: Curves.easeInOut,
+                        alignment: _selectedPlatform == SocialPlatform.facebook
+                            ? Alignment.centerLeft
+                            : Alignment.centerRight,
+                        child: Container(
+                          width: 50,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.blue.withOpacity(0.4),
+                                blurRadius: 4,
+                                spreadRadius: 1,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      // Icons
+                      Row(
+                        children: [
+                          Expanded(
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () {
+                                setState(() {
+                                  _selectedPlatform = SocialPlatform.facebook;
+                                });
+                                _controller.loadUrl(_controller.facebookUrl);
+                              },
+                              child: Center(
+                                child: FaIcon(
+                                  FontAwesomeIcons.facebook,
+                                  size: 20,
+                                  color:
+                                      _selectedPlatform ==
+                                          SocialPlatform.facebook
+                                      ? Colors.white
+                                      : Colors.white70,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () {
+                                setState(() {
+                                  _selectedPlatform = SocialPlatform.instagram;
+                                });
+                                _controller.loadUrl(_controller.instagramUrl);
+                              },
+                              child: Center(
+                                child: FaIcon(
+                                  FontAwesomeIcons.instagram,
+                                  size: 22,
+                                  color:
+                                      _selectedPlatform ==
+                                          SocialPlatform.instagram
+                                      ? Colors.white
+                                      : Colors.white70,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ),
-                GestureDetector(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: const FaIcon(FontAwesomeIcons.apple, size: 26),
-                  ),
-
-                  onTap: () => _controller.loadUrl('https://music.apple.com'),
                 ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -152,6 +225,11 @@ class _MainScreenState extends State<MainScreen> {
                       source: WebViewScripts.hideOpenAppButtonScript,
                       injectionTime: UserScriptInjectionTime.AT_DOCUMENT_END,
                     ),
+                    UserScript(
+                      source: WebViewScripts.hideFacebookAppBanner,
+                      injectionTime: UserScriptInjectionTime.AT_DOCUMENT_END,
+                      forMainFrameOnly: false,
+                    ),
                   ]),
                   initialSettings: InAppWebViewSettings(
                     useShouldOverrideUrlLoading: true,
@@ -160,12 +238,84 @@ class _MainScreenState extends State<MainScreen> {
                     allowsInlineMediaPlayback: true,
                     domStorageEnabled: true,
                     useHybridComposition: true,
-                    userAgent:
-                        'Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.196 Mobile Safari/537.36',
+                    javaScriptCanOpenWindowsAutomatically: true,
+                    supportMultipleWindows: true,
                   ),
                   pullToRefreshController: pullToRefreshController,
                   onWebViewCreated: (controller) {
                     _controller.setWebViewController(controller);
+                  },
+                  onCreateWindow: (controller, createWindowAction) async {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        bool isPopupLoading = true;
+                        return StatefulBuilder(
+                          builder: (context, setState) {
+                            return Dialog(
+                              insetPadding: EdgeInsets.zero,
+                              child: SizedBox(
+                                width: double.infinity,
+                                height: double.infinity,
+                                child: Stack(
+                                  children: [
+                                    InAppWebView(
+                                      windowId: createWindowAction.windowId,
+                                      initialSettings: InAppWebViewSettings(
+                                        useShouldOverrideUrlLoading: true,
+                                        mediaPlaybackRequiresUserGesture: false,
+                                        javaScriptEnabled: true,
+                                        allowsInlineMediaPlayback: true,
+                                        domStorageEnabled: true,
+                                        useHybridComposition: true,
+                                      ),
+                                      onCloseWindow: (controller) {
+                                        Navigator.pop(context);
+                                      },
+                                      shouldOverrideUrlLoading:
+                                          (controller, navigationAction) async {
+                                            return NavigationActionPolicy.ALLOW;
+                                          },
+                                      onLoadStart: (controller, url) {
+                                        setState(() {
+                                          isPopupLoading = true;
+                                        });
+                                      },
+                                      onLoadStop: (controller, url) {
+                                        setState(() {
+                                          isPopupLoading = false;
+                                        });
+                                      },
+                                    ),
+                                    if (isPopupLoading)
+                                      const Center(
+                                        child: CircularProgressIndicator(
+                                          color: Color(0xFF95062D),
+                                        ),
+                                      ),
+                                    Positioned(
+                                      top: 10,
+                                      right: 10,
+                                      child: IconButton(
+                                        icon: const Icon(
+                                          Icons.close,
+                                          color: Colors.black,
+                                          size: 30,
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    );
+                    return true;
                   },
                   shouldOverrideUrlLoading:
                       (controller, navigationAction) async {
@@ -212,6 +362,9 @@ class _MainScreenState extends State<MainScreen> {
                     _controller.setLoading(true);
                   },
                   onLoadStop: (controller, url) async {
+                    await controller.evaluateJavascript(
+                      source: WebViewScripts.hideFacebookAppBanner,
+                    );
                     _controller.setLoading(false);
                     pullToRefreshController?.endRefreshing();
                     _controller.updateHistoryState();
@@ -248,21 +401,22 @@ class _MainScreenState extends State<MainScreen> {
                   icon: FaIcon(FontAwesomeIcons.house),
                   label: 'Home',
                 ),
-                BottomNavigationBarItem(
-                  icon: FaIcon(FontAwesomeIcons.radio),
-                  label: 'LIVE RADIO',
-                ),
+
                 BottomNavigationBarItem(
                   icon: FaIcon(FontAwesomeIcons.youtube),
                   label: 'Youtube',
                 ),
                 BottomNavigationBarItem(
-                  icon: FaIcon(FontAwesomeIcons.instagram),
-                  label: 'Instagram',
+                  icon: FaIcon(FontAwesomeIcons.radio),
+                  label: 'LIVE RADIO',
                 ),
                 BottomNavigationBarItem(
-                  icon: FaIcon(FontAwesomeIcons.facebook),
-                  label: 'Facebook',
+                  icon: FaIcon(FontAwesomeIcons.spotify),
+                  label: 'Spotify',
+                ),
+                BottomNavigationBarItem(
+                  icon: FaIcon(FontAwesomeIcons.apple),
+                  label: 'Apple Music',
                 ),
               ],
             ),
