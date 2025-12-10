@@ -249,10 +249,6 @@ class _MainScreenState extends State<MainScreen> {
                   label: 'Home',
                 ),
                 BottomNavigationBarItem(
-                  icon: FaIcon(FontAwesomeIcons.music),
-                  label: 'Playlist',
-                ),
-                BottomNavigationBarItem(
                   icon: FaIcon(FontAwesomeIcons.radio),
                   label: 'LIVE RADIO',
                 ),
@@ -261,8 +257,12 @@ class _MainScreenState extends State<MainScreen> {
                   label: 'Youtube',
                 ),
                 BottomNavigationBarItem(
-                  icon: FaIcon(FontAwesomeIcons.bullhorn),
-                  label: 'Packages',
+                  icon: FaIcon(FontAwesomeIcons.instagram),
+                  label: 'Instagram',
+                ),
+                BottomNavigationBarItem(
+                  icon: FaIcon(FontAwesomeIcons.facebook),
+                  label: 'Facebook',
                 ),
               ],
             ),

@@ -15,13 +15,11 @@ class MainController extends ChangeNotifier {
   final String homeUrl = "https://www.hotjamzradio.com";
   // Using placeholders for other tabs as specific URLs were not provided.
   // You can update these URLs to the correct paths.
-  final String playlistUrl =
-      "https://www.hotjamzradio.com/new-music-playlists/";
+  final String instagramUrl = "https://www.instagram.com/hotjamzradio";
   final String liveRadioUrl =
       "https://das-edge15-live365-dal02.cdnstream.com/a37600";
   final String youtubeUrl = "https://www.youtube.com";
-  final String packagesUrl =
-      "https://www.hotjamzradio.com/radio-promo-packages/";
+  final String facebookUrl = "https://www.facebook.com/hotjamzradiostation";
 
   MainController() {
     _initConnectivity();
@@ -82,16 +80,16 @@ class MainController extends ChangeNotifier {
         loadUrl(homeUrl);
         break;
       case 1:
-        loadUrl(playlistUrl);
-        break;
-      case 2:
         loadUrl(liveRadioUrl);
         break;
-      case 3:
+      case 2:
         loadUrl(youtubeUrl);
         break;
+      case 3:
+        loadUrl(instagramUrl);
+        break;
       case 4:
-        loadUrl(packagesUrl);
+        loadUrl(facebookUrl);
         break;
     }
   }
