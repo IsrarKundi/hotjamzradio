@@ -13,8 +13,8 @@ class MainController extends ChangeNotifier {
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
 
   final String homeUrl = "https://www.hotjamzradio.com";
-  // Using placeholders for other tabs as specific URLs were not provided.
-  // You can update these URLs to the correct paths.
+  final String playlistUrl = "https://www.hotjamzradio.com/new-music-playlists/";
+  final String packagesUrl = "https://www.hotjamzradio.com/radio-promo-packages/";
   final String instagramUrl = "https://www.instagram.com/hotjamzradio";
   final String liveRadioUrl =
       "https://das-edge15-live365-dal02.cdnstream.com/a37600";
@@ -83,10 +83,10 @@ class MainController extends ChangeNotifier {
         loadUrl(homeUrl);
         break;
       case 1:
-        loadUrl(liveRadioUrl);
+        loadUrl(youtubeUrl);
         break;
       case 2:
-        loadUrl(youtubeUrl);
+        loadUrl(liveRadioUrl);
         break;
       case 3:
         loadUrl(spotifyUrl);

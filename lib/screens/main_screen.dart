@@ -498,7 +498,7 @@ class _MainScreenState extends State<MainScreen> {
               ),
               onTap: () {
                 Navigator.pop(context);
-                _controller.onBottomNavIndexChanged(1);
+                _controller.loadUrl(_controller.playlistUrl);
               },
             ),
             ListTile(
@@ -530,7 +530,7 @@ class _MainScreenState extends State<MainScreen> {
               ),
               onTap: () {
                 Navigator.pop(context);
-                _controller.onBottomNavIndexChanged(3);
+                _controller.onBottomNavIndexChanged(1);
               },
             ),
             ListTile(
@@ -546,7 +546,7 @@ class _MainScreenState extends State<MainScreen> {
               ),
               onTap: () {
                 Navigator.pop(context);
-                _controller.onBottomNavIndexChanged(4);
+                _controller.loadUrl(_controller.packagesUrl);
               },
             ),
 
@@ -604,24 +604,7 @@ class _MainScreenState extends State<MainScreen> {
               },
             ),
 
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: const Divider(color: Colors.white54),
-            ),
-
-            ListTile(
-              leading: const FaIcon(
-                FontAwesomeIcons.shareNodes,
-                color: Colors.white70,
-              ),
-              title: const Text('Share', style: TextStyle(color: Colors.white)),
-              onTap: () {
-                Navigator.pop(context);
-                Share.share(
-                  'Check out Hot Jamz Radio and download our free Music Mobile Apps today! https://www.hotjamzradio.com',
-                );
-              },
-            ),
+           
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: const Divider(color: Colors.white54),
@@ -678,22 +661,50 @@ class _MainScreenState extends State<MainScreen> {
               },
             ),
 
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: const Divider(color: Colors.white54),
             ),
 
             ListTile(
+              dense: true,
+              visualDensity: VisualDensity.compact,
               leading: const FaIcon(
                 FontAwesomeIcons.envelope,
                 color: Colors.white70,
               ),
-              title: const Text('Email', style: TextStyle(color: Colors.white)),
+              title: const Text('Email', 
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
               onTap: () {
                 Navigator.pop(context);
                 _launchUrl('mailto:radiohotjamz@gmail.com'); // Placeholder
               },
             ),
+             ListTile(
+              dense: true,
+              visualDensity: VisualDensity.compact,
+              leading: const FaIcon(
+                FontAwesomeIcons.shareNodes,
+                color: Colors.white70,
+              ),
+              title: const Text('Share',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+               ),
+              onTap: () {
+                Navigator.pop(context);
+                Share.share(
+                  'Check out Hot Jamz Radio and download our free Music Mobile Apps today! https://www.hotjamzradio.com',
+                );
+              },
+            ),
+            //  Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            //   child: const Divider(color: Colors.white54),
+            // ),
+
+           
           ],
         ),
       ),
