@@ -9,6 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../controllers/main_controller.dart';
 import '../widgets/live_loading_indicator.dart';
 import '../utils/webview_scripts.dart';
+import '../widgets/social_media_toggle.dart';
 import 'no_internet_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -18,13 +19,15 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-enum SocialPlatform { facebook, instagram }
+enum SocialPlatform { iheart, instagram, facebook, twitter }
 
 class _MainScreenState extends State<MainScreen> {
   final MainController _controller = MainController();
   DateTime? _lastPressedAt;
   PullToRefreshController? pullToRefreshController;
   SocialPlatform _selectedPlatform = SocialPlatform.facebook;
+  final String _customUserAgent =
+      'Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.196 Mobile Safari/537.36';
 
   @override
   void initState() {
@@ -78,102 +81,38 @@ class _MainScreenState extends State<MainScreen> {
           return Scaffold(
             appBar: AppBar(
               title: const Text(
-                "HOT JAMZ RADIO",
+                "H.J.R.",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   overflow: TextOverflow.visible,
-                  fontSize: 15,
+                  fontSize: 16,
                 ),
               ),
               backgroundColor: const Color(0xFF95062D),
               foregroundColor: Colors.white,
               actions: [
                 // Sliding Segmented Toggle
-                Container(
-                  height: 40,
-                  width: 100,
-                  margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                  decoration: BoxDecoration(
-                    color: Colors.black12,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.white24, width: 1),
-                  ),
-                  child: Stack(
-                    children: [
-                      // Sliding Indicator
-                      AnimatedAlign(
-                        duration: const Duration(milliseconds: 250),
-                        curve: Curves.easeInOut,
-                        alignment: _selectedPlatform == SocialPlatform.facebook
-                            ? Alignment.centerLeft
-                            : Alignment.centerRight,
-                        child: Container(
-                          width: 50,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.blue.withOpacity(0.4),
-                                blurRadius: 4,
-                                spreadRadius: 1,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      // Icons
-                      Row(
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              behavior: HitTestBehavior.translucent,
-                              onTap: () {
-                                setState(() {
-                                  _selectedPlatform = SocialPlatform.facebook;
-                                });
-                                _controller.loadUrl(_controller.facebookUrl);
-                              },
-                              child: Center(
-                                child: FaIcon(
-                                  FontAwesomeIcons.facebook,
-                                  size: 20,
-                                  color:
-                                      _selectedPlatform ==
-                                          SocialPlatform.facebook
-                                      ? Colors.white
-                                      : Colors.white70,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: GestureDetector(
-                              behavior: HitTestBehavior.translucent,
-                              onTap: () {
-                                setState(() {
-                                  _selectedPlatform = SocialPlatform.instagram;
-                                });
-                                _controller.loadUrl(_controller.instagramUrl);
-                              },
-                              child: Center(
-                                child: FaIcon(
-                                  FontAwesomeIcons.instagram,
-                                  size: 22,
-                                  color:
-                                      _selectedPlatform ==
-                                          SocialPlatform.instagram
-                                      ? Colors.white
-                                      : Colors.white70,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                SocialMediaToggle(
+                  selectedPlatform: _selectedPlatform,
+                  onPlatformSelected: (platform) {
+                    setState(() {
+                      _selectedPlatform = platform;
+                    });
+                    switch (platform) {
+                      case SocialPlatform.iheart:
+                        _controller.loadUrl(_controller.iheartUrl);
+                        break;
+                      case SocialPlatform.instagram:
+                        _controller.loadUrl(_controller.instagramUrl);
+                        break;
+                      case SocialPlatform.facebook:
+                        _controller.loadUrl(_controller.facebookUrl);
+                        break;
+                      case SocialPlatform.twitter:
+                        _controller.loadUrl(_controller.twitterUrl);
+                        break;
+                    }
+                  },
                 ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -240,8 +179,7 @@ class _MainScreenState extends State<MainScreen> {
                     useHybridComposition: true,
                     javaScriptCanOpenWindowsAutomatically: true,
                     supportMultipleWindows: true,
-                    userAgent:
-                        'Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.196 Mobile Safari/537.36',
+                    userAgent: _customUserAgent,
                   ),
                   pullToRefreshController: pullToRefreshController,
                   onWebViewCreated: (controller) {
@@ -270,6 +208,7 @@ class _MainScreenState extends State<MainScreen> {
                                         allowsInlineMediaPlayback: true,
                                         domStorageEnabled: true,
                                         useHybridComposition: true,
+                                        userAgent: _customUserAgent,
                                       ),
                                       onCloseWindow: (controller) {
                                         Navigator.pop(context);
@@ -442,7 +381,7 @@ class _MainScreenState extends State<MainScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Menu',
+                    'Menu     Hot Jamz Radio',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 19,
@@ -598,13 +537,27 @@ class _MainScreenState extends State<MainScreen> {
               ),
               onTap: () {
                 Navigator.pop(context);
-                _controller.loadUrl(
-                  'https://music.apple.com',
-                ); // Placeholder - update with actual link
+                _controller.loadUrl('https://music.apple.com');
+              },
+            ),
+            ListTile(
+              dense: true,
+              visualDensity: VisualDensity.compact,
+              leading: Image.asset(
+                'assets/images/iheart.png',
+                width: 28,
+                height: 28,
+              ),
+              title: const Text(
+                'iHeart Radio',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                _controller.loadUrl(_controller.iheartUrl);
               },
             ),
 
-           
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: const Divider(color: Colors.white54),
@@ -635,9 +588,6 @@ class _MainScreenState extends State<MainScreen> {
               ),
               onTap: () {
                 Navigator.pop(context);
-                // setState(() {
-                //   _selectedPlatform = SocialPlatform.facebook;
-                // });
                 _controller.loadUrl(_controller.facebookUrl);
               },
             ),
@@ -654,13 +604,25 @@ class _MainScreenState extends State<MainScreen> {
               ),
               onTap: () {
                 Navigator.pop(context);
-                // setState(() {
-                //   _selectedPlatform = SocialPlatform.instagram;
-                // });
                 _controller.loadUrl(_controller.instagramUrl);
               },
             ),
-
+            ListTile(
+              dense: true,
+              visualDensity: VisualDensity.compact,
+              leading: const FaIcon(
+                FontAwesomeIcons.xTwitter,
+                color: Colors.white70,
+              ),
+              title: const Text(
+                'X/Twitter',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                _controller.loadUrl(_controller.twitterUrl);
+              },
+            ),
 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -674,7 +636,8 @@ class _MainScreenState extends State<MainScreen> {
                 FontAwesomeIcons.envelope,
                 color: Colors.white70,
               ),
-              title: const Text('Email', 
+              title: const Text(
+                'Email',
                 style: TextStyle(color: Colors.white, fontSize: 16),
               ),
               onTap: () {
@@ -682,16 +645,17 @@ class _MainScreenState extends State<MainScreen> {
                 _launchUrl('mailto:radiohotjamz@gmail.com'); // Placeholder
               },
             ),
-             ListTile(
+            ListTile(
               dense: true,
               visualDensity: VisualDensity.compact,
               leading: const FaIcon(
                 FontAwesomeIcons.shareNodes,
                 color: Colors.white70,
               ),
-              title: const Text('Share',
+              title: const Text(
+                'Share',
                 style: TextStyle(color: Colors.white, fontSize: 16),
-               ),
+              ),
               onTap: () {
                 Navigator.pop(context);
                 Share.share(
@@ -699,12 +663,11 @@ class _MainScreenState extends State<MainScreen> {
                 );
               },
             ),
+
             //  Padding(
             //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
             //   child: const Divider(color: Colors.white54),
             // ),
-
-           
           ],
         ),
       ),

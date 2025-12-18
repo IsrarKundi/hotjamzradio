@@ -12,7 +12,8 @@ class MainController extends ChangeNotifier {
   bool canGoForwardState = false;
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
 
-  final String homeUrl = "https://www.hotjamzradio.com";
+  final String homeUrl = "https://hotjamzradio.com/home-page-app-launch";
+  final String homePageUrl = "https://hotjamzradio.com/home-page-mobile";
   final String playlistUrl = "https://www.hotjamzradio.com/new-music-playlists/";
   final String packagesUrl = "https://www.hotjamzradio.com/radio-promo-packages/";
   final String instagramUrl = "https://www.instagram.com/hotjamzradio";
@@ -20,6 +21,8 @@ class MainController extends ChangeNotifier {
       "https://das-edge15-live365-dal02.cdnstream.com/a37600";
   final String youtubeUrl = "https://www.youtube.com";
   final String facebookUrl = "https://www.facebook.com/hotjamzradiostation";
+  final String iheartUrl = "https://www.iheart.com";
+  final String twitterUrl = "https://x.com/";
   final String spotifyUrl =
       "https://open.spotify.com/user/31363rqfdrwtthetk2bq5eafmtda";
   final String appleMusicUrl = "https://music.apple.com";
@@ -80,7 +83,7 @@ class MainController extends ChangeNotifier {
 
     switch (index) {
       case 0:
-        loadUrl(homeUrl);
+        loadUrl(homePageUrl);
         break;
       case 1:
         loadUrl(youtubeUrl);
