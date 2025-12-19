@@ -10,6 +10,7 @@ import '../controllers/main_controller.dart';
 import '../widgets/live_loading_indicator.dart';
 import '../utils/webview_scripts.dart';
 import '../widgets/social_media_toggle.dart';
+import '../widgets/bottom_nav_toggle.dart';
 import 'no_internet_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -25,9 +26,7 @@ class _MainScreenState extends State<MainScreen> {
   final MainController _controller = MainController();
   DateTime? _lastPressedAt;
   PullToRefreshController? pullToRefreshController;
-  SocialPlatform _selectedPlatform = SocialPlatform.facebook;
-  final String _customUserAgent =
-      'Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.196 Mobile Safari/537.36';
+  SocialPlatform _selectedPlatform = SocialPlatform.instagram;
 
   @override
   void initState() {
@@ -179,7 +178,8 @@ class _MainScreenState extends State<MainScreen> {
                     useHybridComposition: true,
                     javaScriptCanOpenWindowsAutomatically: true,
                     supportMultipleWindows: true,
-                    userAgent: _customUserAgent,
+                    userAgent:
+                        'Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.196 Mobile Safari/537.36',
                   ),
                   pullToRefreshController: pullToRefreshController,
                   onWebViewCreated: (controller) {
@@ -208,7 +208,6 @@ class _MainScreenState extends State<MainScreen> {
                                         allowsInlineMediaPlayback: true,
                                         domStorageEnabled: true,
                                         useHybridComposition: true,
-                                        userAgent: _customUserAgent,
                                       ),
                                       onCloseWindow: (controller) {
                                         Navigator.pop(context);
@@ -330,36 +329,9 @@ class _MainScreenState extends State<MainScreen> {
                   ),
               ],
             ),
-            bottomNavigationBar: BottomNavigationBar(
-              backgroundColor: const Color(0xFF95062D),
-              selectedItemColor: Colors.white,
-              unselectedItemColor: Colors.white70,
-              type: BottomNavigationBarType.fixed,
+            bottomNavigationBar: BottomNavToggle(
               currentIndex: _controller.currentIndex,
-              onTap: _controller.onBottomNavIndexChanged,
-              items: const [
-                BottomNavigationBarItem(
-                  icon: FaIcon(FontAwesomeIcons.house),
-                  label: 'Home',
-                ),
-
-                BottomNavigationBarItem(
-                  icon: FaIcon(FontAwesomeIcons.youtube),
-                  label: 'Youtube',
-                ),
-                BottomNavigationBarItem(
-                  icon: FaIcon(FontAwesomeIcons.radio),
-                  label: 'LIVE RADIO',
-                ),
-                BottomNavigationBarItem(
-                  icon: FaIcon(FontAwesomeIcons.spotify),
-                  label: 'Spotify',
-                ),
-                BottomNavigationBarItem(
-                  icon: FaIcon(FontAwesomeIcons.apple),
-                  label: 'Apple Music',
-                ),
-              ],
+              onIndexChanged: _controller.onBottomNavIndexChanged,
             ),
           );
         },
