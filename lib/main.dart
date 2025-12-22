@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'screens/splash_screen.dart';
+import 'services/ad_service.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
+  AdService().init();
   runApp(const MyApp());
 }
 
@@ -29,4 +34,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
