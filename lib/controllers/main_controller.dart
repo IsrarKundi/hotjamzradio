@@ -19,10 +19,12 @@ class MainController extends ChangeNotifier {
   final String packagesUrl =
       "https://www.hotjamzradio.com/radio-promo-packages/";
   final String instagramUrl = "https://www.instagram.com/hotjamzradio";
+  final String instagramLoginUrl = "https://www.instagram.com/";
   final String liveRadioUrl =
       "https://das-edge15-live365-dal02.cdnstream.com/a37600";
   final String youtubeUrl = "https://www.youtube.com";
   final String facebookUrl = "https://m.facebook.com/hotjamzradiostation";
+  final String facebookLoginUrl = "https://m.facebook.com/login";
   final String iheartUrl = "https://www.iheart.com";
   final String twitterUrl = "https://x.com/";
   final String spotifyUrl =

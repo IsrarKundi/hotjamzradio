@@ -137,4 +137,34 @@ class WebViewScripts {
       setInterval(removeBanners, 1000);
     })();
   """;
+
+  static const String instagramScripts = """
+    (function() {
+      if (!window.location.href.includes('instagram.com')) return;
+
+      function handlePopup() {
+        // 1. Try to click "Not Now" button
+        const buttons = document.querySelectorAll('button');
+        for (const btn of buttons) {
+          if (btn.innerText && (btn.innerText.trim().toLowerCase() === 'not now' || btn.innerText.trim() === 'Not Now')) {
+            btn.click();
+            return; // Found and clicked
+          }
+        }
+        
+        // 2. Hide generic dialogs if they contain "Turn on Notifications"
+        const dialogs = document.querySelectorAll('div[role="dialog"]');
+        for (const dialog of dialogs) {
+           if (dialog.innerText && dialog.innerText.includes('Turn on Notifications')) {
+             dialog.style.display = 'none';
+             // Also try to unfreeze body scrolling
+             document.body.style.overflow = 'auto';
+           }
+        }
+      }
+
+      // Run periodically
+      setInterval(handlePopup, 1000);
+    })();
+  """;
 }
