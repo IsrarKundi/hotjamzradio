@@ -14,7 +14,7 @@ class AdService {
 
   // Default interval in minutes (40 as requested)
   // You can update this value from a backend or remote config to make it dynamic.
-  int _adIntervalMinutes = 1; // Set to 1 for testing
+  int _adIntervalMinutes = 35; // Set to 1 for testing
 
   // Production Ad Unit IDs
   static const String _androidUnitId = 'ca-app-pub-6283793061328900/5676677473';

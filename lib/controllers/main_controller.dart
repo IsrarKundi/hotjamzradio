@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'dart:async';
+import '../services/analytics_service.dart';
 
 class MainController extends ChangeNotifier {
   InAppWebViewController? webViewController;
@@ -87,24 +88,30 @@ class MainController extends ChangeNotifier {
 
     switch (index) {
       case 0:
+        AnalyticsService().logPlatformSwitch('Home');
         loadUrl(homePageUrl);
         break;
       case 1:
+        AnalyticsService().logPlatformSwitch('YouTube');
         loadUrl(youtubeUrl);
         break;
       case 2:
+        AnalyticsService().logPlatformSwitch('Live Radio');
         loadUrl(liveRadioUrl);
         break;
       case 3:
+        AnalyticsService().logPlatformSwitch('Spotify');
         loadUrl(spotifyUrl);
         break;
       case 4:
+        AnalyticsService().logPlatformSwitch('Apple Music');
         loadUrl(appleMusicUrl);
         break;
     }
   }
 
   void loadUrl(String url) {
+    AnalyticsService().logUrlLoad(url);
     webViewController?.loadUrl(urlRequest: URLRequest(url: WebUri(url)));
   }
 

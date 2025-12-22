@@ -9,6 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../controllers/main_controller.dart';
 import '../widgets/live_loading_indicator.dart';
 import '../utils/webview_scripts.dart';
+import '../services/analytics_service.dart';
 import '../widgets/social_media_toggle.dart';
 import '../widgets/bottom_nav_toggle.dart';
 import 'no_internet_screen.dart';
@@ -99,15 +100,19 @@ class _MainScreenState extends State<MainScreen> {
                     });
                     switch (platform) {
                       case SocialPlatform.iheart:
+                        AnalyticsService().logPlatformSwitch('iHeartRadio');
                         _controller.loadUrl(_controller.iheartUrl);
                         break;
                       case SocialPlatform.instagram:
+                        AnalyticsService().logPlatformSwitch('Instagram');
                         _controller.loadUrl(_controller.instagramUrl);
                         break;
                       case SocialPlatform.facebook:
+                        AnalyticsService().logPlatformSwitch('Facebook');
                         _controller.loadUrl(_controller.facebookUrl);
                         break;
                       case SocialPlatform.twitter:
+                        AnalyticsService().logPlatformSwitch('Twitter/X');
                         _controller.loadUrl(_controller.twitterUrl);
                         break;
                     }
@@ -299,6 +304,9 @@ class _MainScreenState extends State<MainScreen> {
                         return NavigationActionPolicy.ALLOW;
                       },
                   onLoadStart: (controller, url) {
+                    if (url != null) {
+                      AnalyticsService().logUrlLoad(url.toString());
+                    }
                     _controller.setLoading(true);
                   },
                   onLoadStop: (controller, url) async {
@@ -614,6 +622,7 @@ class _MainScreenState extends State<MainScreen> {
               ),
               onTap: () {
                 Navigator.pop(context);
+                AnalyticsService().logAction('email_click');
                 _launchUrl('mailto:radiohotjamz@gmail.com'); // Placeholder
               },
             ),
@@ -630,6 +639,7 @@ class _MainScreenState extends State<MainScreen> {
               ),
               onTap: () {
                 Navigator.pop(context);
+                AnalyticsService().logAction('share_app');
                 Share.share(
                   'Check out Hot Jamz Radio and download our free Music Mobile Apps today! https://www.hotjamzradio.com',
                 );
