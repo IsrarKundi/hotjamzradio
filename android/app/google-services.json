@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "819006059632",
+    "project_id": "hot-jamz-radio",
+    "storage_bucket": "hot-jamz-radio.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819006059632:android:8f10e068317f940d5b70b5",
+        "android_client_info": {
+          "package_name": "com.hotjamzradio.mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCW6xgpd1pVkC0-_xGzRZPrKQ4nOR1p0jQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819006059632:android:99208f4d33f8581f5b70b5",
+        "android_client_info": {
+          "package_name": "come.hot.hotjamzradio"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCW6xgpd1pVkC0-_xGzRZPrKQ4nOR1p0jQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
