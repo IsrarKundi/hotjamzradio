@@ -28,6 +28,11 @@ class AnalyticsService {
       name: 'webview_load',
       parameters: {'url': sanitizedUrl},
     );
+    // Explicitly log as screen view to populate "Views" dashboard
+    await _analytics.logScreenView(
+      screenName: sanitizedUrl,
+      screenClass: 'WebView',
+    );
   }
 
   Future<void> logAction(

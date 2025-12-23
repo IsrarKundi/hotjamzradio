@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
+      navigatorObservers: [AnalyticsService().getObserver()],
       home: const SplashScreen(),
     );
   }

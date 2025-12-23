@@ -11,10 +11,11 @@ class AdService {
   bool _isAdLoading = false;
   Timer? _adTimer;
   bool _showAdRequested = false;
+  bool _isFirstAdShown = false;
 
-  // Default interval in minutes (40 as requested)
-  // You can update this value from a backend or remote config to make it dynamic.
-  int _adIntervalMinutes = 35; // Set to 1 for testing
+  // Ad intervals in minutes
+  static const int _firstAdInterval = 5;
+  static const int _regularAdInterval = 30;
 
   // Production Ad Unit IDs
   static const String _androidUnitId = 'ca-app-pub-6283793061328900/5676677473';
@@ -30,20 +31,13 @@ class AdService {
     _startTimer();
   }
 
-  /// Updates the ad interval and restarts the timer.
-  void updateInterval(int minutes) {
-    if (minutes <= 0) return;
-    _adIntervalMinutes = minutes;
-    _startTimer();
-    debugPrint('Ad interval updated to $_adIntervalMinutes minutes');
-  }
-
   void _startTimer() {
     _adTimer?.cancel();
-    _adTimer = Timer.periodic(Duration(minutes: _adIntervalMinutes), (timer) {
-      debugPrint(
-        'AdService: Timer triggered after $_adIntervalMinutes minute(s).',
-      );
+    final interval = _isFirstAdShown ? _regularAdInterval : _firstAdInterval;
+
+    _adTimer = Timer(Duration(minutes: interval), () {
+      debugPrint('AdService: Timer triggered after $interval minute(s).');
+      _isFirstAdShown = true; // Next timer will use _regularAdInterval
       showInterstitialAd();
     });
   }
