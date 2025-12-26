@@ -13,6 +13,7 @@ import '../services/analytics_service.dart';
 import '../widgets/social_media_toggle.dart';
 import '../widgets/bottom_nav_toggle.dart';
 import 'no_internet_screen.dart';
+import 'plans_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -184,7 +185,7 @@ class _MainScreenState extends State<MainScreen> {
                     javaScriptCanOpenWindowsAutomatically: true,
                     supportMultipleWindows: true,
                     userAgent:
-                        'Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.196 Mobile Safari/537.36',
+                        'Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36',
                   ),
                   pullToRefreshController: pullToRefreshController,
                   onWebViewCreated: (controller) {
@@ -213,6 +214,8 @@ class _MainScreenState extends State<MainScreen> {
                                         allowsInlineMediaPlayback: true,
                                         domStorageEnabled: true,
                                         useHybridComposition: true,
+                                        userAgent:
+                                            'Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36',
                                       ),
                                       onCloseWindow: (controller) {
                                         Navigator.pop(context);
@@ -388,6 +391,83 @@ class _MainScreenState extends State<MainScreen> {
                 ],
               ),
             ),
+            // const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PlansScreen(),
+                    ),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFFFFD700), Color(0xFFFFA500)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const FaIcon(
+                          FontAwesomeIcons.gem,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Go Premium',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            'Enjoy ad-free music',
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      const Icon(
+                        Icons.arrow_forward_ios,
+                        color: Colors.white,
+                        size: 16,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            // const SizedBox(height: 30),
             ListTile(
               dense: true,
               visualDensity: VisualDensity.compact,
@@ -645,11 +725,6 @@ class _MainScreenState extends State<MainScreen> {
                 );
               },
             ),
-
-            //  Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            //   child: const Divider(color: Colors.white54),
-            // ),
           ],
         ),
       ),
