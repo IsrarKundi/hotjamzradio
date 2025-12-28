@@ -40,8 +40,8 @@ class BottomNavToggle extends StatelessWidget {
                   index: 1,
                 ),
                 2: _buildNavItem(
-                  icon: FontAwesomeIcons.radio,
-                  label: 'LIVE RADIO',
+                  icon: FontAwesomeIcons.globe,
+                  label: 'Browser',
                   index: 2,
                 ),
                 3: _buildNavItem(
@@ -55,9 +55,7 @@ class BottomNavToggle extends StatelessWidget {
                   index: 4,
                 ),
               },
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-              ),
+              decoration: BoxDecoration(color: Colors.transparent),
               thumbDecoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.15),
                 borderRadius: BorderRadius.circular(8),

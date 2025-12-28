@@ -96,8 +96,8 @@ class MainController extends ChangeNotifier {
         loadUrl(youtubeUrl);
         break;
       case 2:
-        AnalyticsService().logPlatformSwitch('Live Radio');
-        loadUrl(liveRadioUrl);
+        AnalyticsService().logPlatformSwitch('Browser');
+        // Browser Screen handles its own logic
         break;
       case 3:
         AnalyticsService().logPlatformSwitch('Spotify');

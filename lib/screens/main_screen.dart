@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'browser_screen.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 import 'dart:collection';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:share_plus/share_plus.dart';
@@ -156,188 +157,211 @@ class _MainScreenState extends State<MainScreen> {
             drawer: _buildDrawer(context),
             body: Stack(
               children: [
-                InAppWebView(
-                  initialUrlRequest: URLRequest(
-                    url: WebUri(_controller.homeUrl),
-                  ),
-                  initialUserScripts: UnmodifiableListView<UserScript>([
-                    UserScript(
-                      source: WebViewScripts.hideHeaderScript,
-                      injectionTime: UserScriptInjectionTime.AT_DOCUMENT_END,
-                    ),
-                    UserScript(
-                      source: WebViewScripts.hideOpenAppButtonScript,
-                      injectionTime: UserScriptInjectionTime.AT_DOCUMENT_END,
-                    ),
-                    UserScript(
-                      source: WebViewScripts.hideFacebookAppBanner,
-                      injectionTime: UserScriptInjectionTime.AT_DOCUMENT_END,
-                      forMainFrameOnly: false,
-                    ),
-                  ]),
-                  initialSettings: InAppWebViewSettings(
-                    useShouldOverrideUrlLoading: true,
-                    mediaPlaybackRequiresUserGesture: false,
-                    javaScriptEnabled: true,
-                    allowsInlineMediaPlayback: true,
-                    domStorageEnabled: true,
-                    useHybridComposition: true,
-                    javaScriptCanOpenWindowsAutomatically: true,
-                    supportMultipleWindows: true,
-                    userAgent:
-                        'Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36',
-                  ),
-                  pullToRefreshController: pullToRefreshController,
-                  onWebViewCreated: (controller) {
-                    _controller.setWebViewController(controller);
-                  },
-                  onCreateWindow: (controller, createWindowAction) async {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        bool isPopupLoading = true;
-                        return StatefulBuilder(
-                          builder: (context, setState) {
-                            return Dialog(
-                              insetPadding: EdgeInsets.zero,
-                              child: SizedBox(
-                                width: double.infinity,
-                                height: double.infinity,
-                                child: Stack(
-                                  children: [
-                                    InAppWebView(
-                                      windowId: createWindowAction.windowId,
-                                      initialSettings: InAppWebViewSettings(
-                                        useShouldOverrideUrlLoading: true,
-                                        mediaPlaybackRequiresUserGesture: false,
-                                        javaScriptEnabled: true,
-                                        allowsInlineMediaPlayback: true,
-                                        domStorageEnabled: true,
-                                        useHybridComposition: true,
-                                        userAgent:
-                                            'Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36',
+                Offstage(
+                  offstage: _controller.currentIndex == 2,
+                  child: Stack(
+                    children: [
+                      InAppWebView(
+                        initialUrlRequest: URLRequest(
+                          url: WebUri(_controller.homeUrl),
+                        ),
+                        initialUserScripts: UnmodifiableListView<UserScript>([
+                          UserScript(
+                            source: WebViewScripts.hideHeaderScript,
+                            injectionTime:
+                                UserScriptInjectionTime.AT_DOCUMENT_END,
+                          ),
+                          UserScript(
+                            source: WebViewScripts.hideOpenAppButtonScript,
+                            injectionTime:
+                                UserScriptInjectionTime.AT_DOCUMENT_END,
+                          ),
+                          UserScript(
+                            source: WebViewScripts.hideFacebookAppBanner,
+                            injectionTime:
+                                UserScriptInjectionTime.AT_DOCUMENT_END,
+                            forMainFrameOnly: false,
+                          ),
+                        ]),
+                        initialSettings: InAppWebViewSettings(
+                          useShouldOverrideUrlLoading: true,
+                          mediaPlaybackRequiresUserGesture: false,
+                          javaScriptEnabled: true,
+                          allowsInlineMediaPlayback: true,
+                          domStorageEnabled: true,
+                          useHybridComposition: true,
+                          javaScriptCanOpenWindowsAutomatically: true,
+                          supportMultipleWindows: true,
+                          userAgent:
+                              'Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36',
+                        ),
+                        pullToRefreshController: pullToRefreshController,
+                        onWebViewCreated: (controller) {
+                          _controller.setWebViewController(controller);
+                        },
+                        onCreateWindow: (controller, createWindowAction) async {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              bool isPopupLoading = true;
+                              return StatefulBuilder(
+                                builder: (context, setState) {
+                                  return Dialog(
+                                    insetPadding: EdgeInsets.zero,
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      child: Stack(
+                                        children: [
+                                          InAppWebView(
+                                            windowId:
+                                                createWindowAction.windowId,
+                                            initialSettings: InAppWebViewSettings(
+                                              useShouldOverrideUrlLoading: true,
+                                              mediaPlaybackRequiresUserGesture:
+                                                  false,
+                                              javaScriptEnabled: true,
+                                              allowsInlineMediaPlayback: true,
+                                              domStorageEnabled: true,
+                                              useHybridComposition: true,
+                                              userAgent:
+                                                  'Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36',
+                                            ),
+                                            onCloseWindow: (controller) {
+                                              Navigator.pop(context);
+                                            },
+                                            shouldOverrideUrlLoading:
+                                                (
+                                                  controller,
+                                                  navigationAction,
+                                                ) async {
+                                                  return NavigationActionPolicy
+                                                      .ALLOW;
+                                                },
+                                            onLoadStart: (controller, url) {
+                                              setState(() {
+                                                isPopupLoading = true;
+                                              });
+                                            },
+                                            onLoadStop: (controller, url) {
+                                              setState(() {
+                                                isPopupLoading = false;
+                                              });
+                                            },
+                                          ),
+                                          if (isPopupLoading)
+                                            const Center(
+                                              child: CircularProgressIndicator(
+                                                color: Color(0xFF95062D),
+                                              ),
+                                            ),
+                                          Positioned(
+                                            top: 10,
+                                            right: 10,
+                                            child: IconButton(
+                                              icon: const Icon(
+                                                Icons.close,
+                                                color: Colors.black,
+                                                size: 30,
+                                              ),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      onCloseWindow: (controller) {
-                                        Navigator.pop(context);
-                                      },
-                                      shouldOverrideUrlLoading:
-                                          (controller, navigationAction) async {
-                                            return NavigationActionPolicy.ALLOW;
-                                          },
-                                      onLoadStart: (controller, url) {
-                                        setState(() {
-                                          isPopupLoading = true;
-                                        });
-                                      },
-                                      onLoadStop: (controller, url) {
-                                        setState(() {
-                                          isPopupLoading = false;
-                                        });
-                                      },
                                     ),
-                                    if (isPopupLoading)
-                                      const Center(
-                                        child: CircularProgressIndicator(
-                                          color: Color(0xFF95062D),
+                                  );
+                                },
+                              );
+                            },
+                          );
+                          return true;
+                        },
+                        shouldOverrideUrlLoading:
+                            (controller, navigationAction) async {
+                              var uri = navigationAction.request.url;
+                              if (uri != null) {
+                                // Handle intent:// URLs (Deep links)
+                                if (uri.scheme == 'intent') {
+                                  try {
+                                    String intentUrl = uri.toString();
+                                    // Extract browser_fallback_url if available
+                                    if (intentUrl.contains(
+                                      'browser_fallback_url=',
+                                    )) {
+                                      var fallbackUrl = Uri.decodeComponent(
+                                        intentUrl
+                                            .split('browser_fallback_url=')[1]
+                                            .split(';')[0],
+                                      );
+                                      await controller.loadUrl(
+                                        urlRequest: URLRequest(
+                                          url: WebUri(fallbackUrl),
                                         ),
-                                      ),
-                                    Positioned(
-                                      top: 10,
-                                      right: 10,
-                                      child: IconButton(
-                                        icon: const Icon(
-                                          Icons.close,
-                                          color: Colors.black,
-                                          size: 30,
-                                        ),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    );
-                    return true;
-                  },
-                  shouldOverrideUrlLoading:
-                      (controller, navigationAction) async {
-                        var uri = navigationAction.request.url;
-                        if (uri != null) {
-                          // Handle intent:// URLs (Deep links)
-                          if (uri.scheme == 'intent') {
-                            try {
-                              String intentUrl = uri.toString();
-                              // Extract browser_fallback_url if available
-                              if (intentUrl.contains('browser_fallback_url=')) {
-                                var fallbackUrl = Uri.decodeComponent(
-                                  intentUrl
-                                      .split('browser_fallback_url=')[1]
-                                      .split(';')[0],
-                                );
-                                await controller.loadUrl(
-                                  urlRequest: URLRequest(
-                                    url: WebUri(fallbackUrl),
-                                  ),
-                                );
-                                return NavigationActionPolicy.CANCEL;
-                              }
-                            } catch (e) {
-                              debugPrint('Error parsing intent URL: $e');
-                            }
-                          }
+                                      );
+                                      return NavigationActionPolicy.CANCEL;
+                                    }
+                                  } catch (e) {
+                                    debugPrint('Error parsing intent URL: $e');
+                                  }
+                                }
 
-                          if (![
-                            "http",
-                            "https",
-                            "file",
-                            "chrome",
-                            "data",
-                            "javascript",
-                            "about",
-                          ].contains(uri.scheme)) {
-                            return NavigationActionPolicy.CANCEL;
+                                if (![
+                                  "http",
+                                  "https",
+                                  "file",
+                                  "chrome",
+                                  "data",
+                                  "javascript",
+                                  "about",
+                                ].contains(uri.scheme)) {
+                                  return NavigationActionPolicy.CANCEL;
+                                }
+                              }
+                              return NavigationActionPolicy.ALLOW;
+                            },
+                        onLoadStart: (controller, url) {
+                          if (url != null) {
+                            AnalyticsService().logUrlLoad(url.toString());
                           }
-                        }
-                        return NavigationActionPolicy.ALLOW;
-                      },
-                  onLoadStart: (controller, url) {
-                    if (url != null) {
-                      AnalyticsService().logUrlLoad(url.toString());
-                    }
-                    _controller.setLoading(true);
-                  },
-                  onLoadStop: (controller, url) async {
-                    await controller.evaluateJavascript(
-                      source: WebViewScripts.hideFacebookAppBanner,
-                    );
-                    _controller.setLoading(false);
-                    pullToRefreshController?.endRefreshing();
-                    _controller.updateHistoryState();
-                  },
-                  onUpdateVisitedHistory: (controller, url, androidIsReload) {
-                    _controller.updateHistoryState();
-                  },
-                  onReceivedError: (controller, request, error) {
-                    pullToRefreshController?.endRefreshing();
-                  },
-                  onPermissionRequest: (controller, request) async {
-                    return PermissionResponse(
-                      resources: request.resources,
-                      action: PermissionResponseAction.GRANT,
-                    );
-                  },
-                ),
-                if (_controller.isLoading)
-                  Container(
-                    color: Colors.white,
-                    child: const LiveLoadingIndicator(),
+                          _controller.setLoading(true);
+                        },
+                        onLoadStop: (controller, url) async {
+                          await controller.evaluateJavascript(
+                            source: WebViewScripts.hideFacebookAppBanner,
+                          );
+                          _controller.setLoading(false);
+                          pullToRefreshController?.endRefreshing();
+                          _controller.updateHistoryState();
+                        },
+                        onUpdateVisitedHistory:
+                            (controller, url, androidIsReload) {
+                              _controller.updateHistoryState();
+                            },
+                        onReceivedError: (controller, request, error) {
+                          pullToRefreshController?.endRefreshing();
+                        },
+                        onPermissionRequest: (controller, request) async {
+                          return PermissionResponse(
+                            resources: request.resources,
+                            action: PermissionResponseAction.GRANT,
+                          );
+                        },
+                      ),
+                      if (_controller.isLoading)
+                        Container(
+                          color: Colors.white,
+                          child: const LiveLoadingIndicator(),
+                        ),
+                    ],
                   ),
+                ),
+                Offstage(
+                  offstage: _controller.currentIndex != 2,
+                  child: const BrowserScreen(),
+                ),
               ],
             ),
             bottomNavigationBar: BottomNavToggle(
@@ -363,13 +387,22 @@ class _MainScreenState extends State<MainScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Menu     Hot Jamz Radio',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 19,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'webview',
+                        style: TextStyle(color: Colors.white70, fontSize: 12),
+                      ),
+                      Text(
+                        'Menu     Hot Jamz Radio',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 19,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
                   IconButton(
                     icon: CircleAvatar(
@@ -504,11 +537,11 @@ class _MainScreenState extends State<MainScreen> {
               dense: true,
               visualDensity: VisualDensity.compact,
               leading: const FaIcon(
-                FontAwesomeIcons.radio,
+                FontAwesomeIcons.globe,
                 color: Colors.white70,
               ),
               title: const Text(
-                'LIVE RADIO',
+                'Browser',
                 style: TextStyle(color: Colors.white, fontSize: 16),
               ),
               onTap: () {
