@@ -15,6 +15,7 @@ import '../widgets/social_media_toggle.dart';
 import '../widgets/bottom_nav_toggle.dart';
 import 'no_internet_screen.dart';
 import 'plans_screen.dart';
+import 'radio_player_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -110,7 +111,12 @@ class _MainScreenState extends State<MainScreen> {
                         break;
                       case SocialPlatform.radio:
                         AnalyticsService().logPlatformSwitch('Live Radio');
-                        _controller.loadUrl(_controller.liveRadioUrl);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const RadioPlayerScreen(),
+                          ),
+                        );
                         break;
                     }
                   },
@@ -530,6 +536,27 @@ class _MainScreenState extends State<MainScreen> {
               onTap: () {
                 Navigator.pop(context);
                 _controller.loadUrl(_controller.playlistUrl);
+              },
+            ),
+            ListTile(
+              dense: true,
+              visualDensity: VisualDensity.compact,
+              leading: const Icon(
+                Icons.radio,
+                color: Colors.white70,
+              ),
+              title: const Text(
+                'Live Radio',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const RadioPlayerScreen(),
+                  ),
+                );
               },
             ),
             ListTile(
