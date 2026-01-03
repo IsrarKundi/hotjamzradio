@@ -23,7 +23,7 @@ class SocialMediaToggle extends StatelessWidget {
       ),
       child: CustomSlidingSegmentedControl<SocialPlatform>(
         initialValue: selectedPlatform,
-        children: {
+        children: { 
           SocialPlatform.iheart: _buildIcon(
             context,
             assetInvalid: 'assets/images/iheart.png',
@@ -44,6 +44,11 @@ class SocialMediaToggle extends StatelessWidget {
             iconData: FontAwesomeIcons.xTwitter,
             platform: SocialPlatform.twitter,
           ),
+          SocialPlatform.radio: _buildIcon(
+            context,
+            iconData: Icons.radio,
+            platform: SocialPlatform.radio,
+          ),
         },
         decoration: BoxDecoration(
           color: Colors.black12,
@@ -59,10 +64,9 @@ class SocialMediaToggle extends StatelessWidget {
         onValueChanged: (v) {
           onPlatformSelected(v);
         },
-        // Adjust padding and sizing to match the previous design approx 180 width total
-        // 180 / 4 = 45 per item.
+        // Adjust padding and sizing for 5 items with consistent ratio
         innerPadding: const EdgeInsets.all(2),
-        fixedWidth: 40,
+        fixedWidth: 42,
       ),
     );
   }

@@ -23,7 +23,7 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-enum SocialPlatform { iheart, instagram, facebook, twitter }
+enum SocialPlatform { iheart, instagram, facebook, twitter, radio }
 
 class _MainScreenState extends State<MainScreen> {
   final MainController _controller = MainController();
@@ -82,19 +82,10 @@ class _MainScreenState extends State<MainScreen> {
 
           return Scaffold(
             appBar: AppBar(
-              title: const Text(
-                "H.J.R.",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  overflow: TextOverflow.visible,
-                  fontSize: 16,
-                ),
-              ),
-              backgroundColor: const Color(0xFF95062D),
-              foregroundColor: Colors.white,
-              actions: [
-                // Sliding Segmented Toggle
-                SocialMediaToggle(
+              centerTitle: false,
+              title: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: SocialMediaToggle(
                   selectedPlatform: _selectedPlatform,
                   onPlatformSelected: (platform) {
                     setState(() {
@@ -117,9 +108,17 @@ class _MainScreenState extends State<MainScreen> {
                         AnalyticsService().logPlatformSwitch('Twitter/X');
                         _controller.loadUrl(_controller.twitterUrl);
                         break;
+                      case SocialPlatform.radio:
+                        AnalyticsService().logPlatformSwitch('Live Radio');
+                        _controller.loadUrl(_controller.liveRadioUrl);
+                        break;
                     }
                   },
                 ),
+              ),
+              backgroundColor: const Color(0xFF95062D),
+              foregroundColor: Colors.white,
+              actions: [
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
