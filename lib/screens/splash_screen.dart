@@ -14,7 +14,9 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 3), () {
+    // Wait for initialization before navigating
+    // Increased from 3 to 4 seconds to ensure all services are ready
+    Timer(const Duration(seconds: 4), () {
       if (mounted) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const MainScreen()),

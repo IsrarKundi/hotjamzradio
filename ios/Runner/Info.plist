@@ -59,5 +59,30 @@
         <string>cstr6suwn9.skadnetwork</string>
       </dict>
     </array>
+    <!-- Privacy Permissions -->
+    <key>NSUserTrackingUsageDescription</key>
+    <string>We use tracking to show personalized ads and improve your experience.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>This app needs camera access for web features.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>This app needs microphone access for web features.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>This app needs access to your photos to share images.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs location access for web features.</string>
+    <!-- App Transport Security -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+        <key>NSAllowsArbitraryLoadsInWebContent</key>
+        <true/>
+    </dict>
+    <!-- Background Modes for Audio Streaming -->
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>audio</string>
+        <string>fetch</string>
+    </array>
 </dict>
 </plist>
